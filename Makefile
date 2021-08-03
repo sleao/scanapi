@@ -1,5 +1,4 @@
-timestamp = `date +%s`
-
+timestamp = `date -u +'%Y%m%d%H%M%S'`
 
 test:
 	@pytest --cov=./scanapi --cov-report=xml
@@ -10,10 +9,13 @@ black:
 flake8:
 	@poetry run flake8 --ignore=E501,W501,E231,W503
 
-check: black flake8
+mypy:
+	@poetry run mypy scanapi
+
+check: black flake8 mypy
 
 change-version:
-	@poetry version 2.1.0-$(timestamp)
+	@poetry version `poetry version -s | cut -f-3 -d.`.dev$(timestamp)
 
 format:
 	@black -l 80 . --exclude=.venv
@@ -31,4 +33,4 @@ run:
 bandit:
 	@bandit -r scanapi
 
-.PHONY: test format check install sh run
+.PHONY: test black flake8 mypy check change-version format install sh run bandit

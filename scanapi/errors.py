@@ -1,4 +1,9 @@
 class MalformedSpecError(Exception):
+    """Raised when API spec is invalid;
+
+    base class for other exceptions
+    """
+
     pass
 
 
@@ -40,7 +45,9 @@ class InvalidPythonCodeError(MalformedSpecError):
 
 
 class BadConfigurationError(Exception):
-    """Raised when an environment variable was not set or was badly configured"""
+    """Raised when an environment variable was not set
+    or was badly configured
+    """
 
     def __init__(self, env_var, *args):
         super(BadConfigurationError, self).__init__(
@@ -55,3 +62,7 @@ class EmptyConfigFileError(Exception):
     def __init__(self, file_path, *args):
         message = f"File '{file_path}' is empty."
         super(EmptyConfigFileError, self).__init__(message, *args)
+
+
+class BadConfigIncludeError(Exception):
+    """Raised when the value of the !include yaml tag is not a scalar."""
